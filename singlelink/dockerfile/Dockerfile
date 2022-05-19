@@ -6,3 +6,5 @@ RUN npm i --ignore-scripts
 COPY entrypoint.sh /entrypoint.sh
 
 EXPOSE 3000
+
+CMD ["/entrypoint.sh"]
