@@ -1,0 +1,61 @@
+version: "3.8"
+
+services:
+  postgres:
+    image: postgres:13
+    environment:
+      POSTGRES_HOST_AUTH_METHOD: trust
+    volumes:
+      - pg_data:/var/lib/postgresql/data
+
+  redis:
+    image: redis
+    restart: unless-stopped
+
+  web:
+    image: glitchtip/glitchtip
+    depends_on:
+      - postgres
+      - redis
+    environment:
+      - DATABASE_URL=postgres://postgres:postgres@postgres:5432/postgres
+      - PORT=8000
+      - GLITCHTIP_DOMAIN=https://glitchtip.semudando.com.br
+      - DEFAULT_FROM_EMAIL=glitchtip@semudando.com.br
+      - SECRET_KEY # Comes from env
+    restart: unless-stopped
+    networks:
+      - caddy
+      - default
+    labels:
+      caddy: glitchtip.semudando.com.br
+      caddy.reverse_proxy: "{{upstreams 8000}}"
+
+  worker:
+    image: glitchtip/glitchtip
+    command: ./bin/run-celery-with-beat.sh
+    depends_on:
+     - web
+    environment:
+      - DATABASE_URL=postgres://postgres:postgres@postgres:5432/postgres
+      - DEFAULT_FROM_EMAIL=glitchtip@semudando.com.br
+      - SECRET_KEY # Comes from env
+    restart: unless-stopped
+
+  migrate:
+    image: glitchtip/glitchtip
+    command: "./manage.py migrate"
+    depends_on:
+     - web
+    environment:
+      - DATABASE_URL=postgres://postgres:postgres@postgres:5432/postgres
+      - DEFAULT_FROM_EMAIL=glitchtip@semudando.com.br
+      - SECRET_KEY # Comes from env
+
+
+networks:
+  caddy:
+    external: true
+
+volumes:
+  pg_data:
