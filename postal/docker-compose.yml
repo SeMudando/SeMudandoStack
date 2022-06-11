@@ -16,6 +16,15 @@ services:
       - RABITMQ_DEFAULT_PASS
       - RABBITMQ_DEFAULT_VHOST=postal
 
+
+  manager:
+    image: ghcr.io/postalserver/postal
+    command: tail -f /dev/null
+    configs:
+      - source: postal_config
+        target: "config/postal.yml"
+
+
   web:
     image: ghcr.io/postalserver/postal
     command: postal web-server
