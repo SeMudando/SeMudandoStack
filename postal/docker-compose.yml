@@ -21,7 +21,7 @@ services:
     command: postal web-server
     configs:
       - source: postal_config
-        target: "/config"
+        target: "/config/postal.yml"
     networks:
       - caddy
       - default
@@ -34,28 +34,28 @@ services:
     command: postal smtp-server
     configs:
       - source: postal_config
-        target: "/config"
+        target: "/config/postal.yml"
 
   worker:
     image: ghcr.io/postalserver/postal
     command: postal worker
     configs:
       - source: postal_config
-        target: "/config"
+        target: "/config/postal.yml"
 
   cron:
     image: ghcr.io/postalserver/postal
     command: postal cron
     configs:
       - source: postal_config
-        target: "/config"
+        target: "/config/postal.yml"
 
   requeuer:
     image: ghcr.io/postalserver/postal
     command: postal requeuer
     configs:
       - source: postal_config
-        target: "/config"
+        target: "/config/postal.yml"
 
 networks:
   caddy:
