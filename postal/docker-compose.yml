@@ -31,6 +31,10 @@ services:
     configs:
       - source: postal_config
         target: "/config/postal.yml"
+    secrets:
+      - source: postal_signing_key
+        target: "/config/signing.key"
+        mode: 644
     networks:
       - caddy
       - default
@@ -44,6 +48,10 @@ services:
     configs:
       - source: postal_config
         target: "/config/postal.yml"
+    secrets:
+      - source: postal_signing_key
+        target: "/config/signing.key"
+        mode: 644
 
   worker:
     image: ghcr.io/postalserver/postal
@@ -51,6 +59,10 @@ services:
     configs:
       - source: postal_config
         target: "/config/postal.yml"
+    secrets:
+      - source: postal_signing_key
+        target: "/config/signing.key"
+        mode: 644
 
   cron:
     image: ghcr.io/postalserver/postal
@@ -58,6 +70,10 @@ services:
     configs:
       - source: postal_config
         target: "/config/postal.yml"
+    secrets:
+      - source: postal_signing_key
+        target: "/config/signing.key"
+        mode: 644
 
   requeuer:
     image: ghcr.io/postalserver/postal
@@ -65,6 +81,10 @@ services:
     configs:
       - source: postal_config
         target: "/config/postal.yml"
+    secrets:
+      - source: postal_signing_key
+        target: "/config/signing.key"
+        mode: 644
 
 networks:
   caddy:
@@ -72,6 +92,10 @@ networks:
 
 configs:
   postal_config:
+    external: true
+
+secrets:
+  postal_signing_key:
     external: true
 
 volumes:
