@@ -40,7 +40,7 @@ services:
       - default
     labels:
       caddy: "postal.semudando.com.br"
-      caddy.reverse_proxy: "{{upstreams 5000}}"
+      caddy.reverse_proxy: "{{upstreams http 5000}}"
 
   smtp:
     image: ghcr.io/postalserver/postal
