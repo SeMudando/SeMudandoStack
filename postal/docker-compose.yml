@@ -1,0 +1,69 @@
+version: "3.8"
+
+services:
+  mariadb:
+    image: mariadb
+    volumes:
+      - mariadb:/var/lib/mysql
+    environment:
+      - MARIADB_DATABASE=postal
+      - MARIADB_ROOT_PASSWORD
+
+  rabbit:
+    image: rabbitmq:3.8
+    environment:
+      - RABITMQ_DEFAULT_USER=postal
+      - RABITMQ_DEFAULT_PASS
+      - RABBITMQ_DEFAULT_VHOST=postal
+
+  web:
+    image: ghcr.io/postalserver/postal
+    command: postal web-server
+    configs:
+      - source: postal_config
+        target: "/config"
+    networks:
+      - caddy
+      - default
+    labels:
+      caddy: "postal.semudando.com.br"
+      caddy.reverse_proxy: "{{upstreams 5000}}"
+
+  smtp:
+    image: ghcr.io/postalserver/postal
+    command: postal smtp-server
+    configs:
+      - source: postal_config
+        target: "/config"
+
+  worker:
+    image: ghcr.io/postalserver/postal
+    command: postal worker
+    configs:
+      - source: postal_config
+        target: "/config"
+
+  cron:
+    image: ghcr.io/postalserver/postal
+    command: postal cron
+    configs:
+      - source: postal_config
+        target: "/config"
+
+  requeuer:
+    image: ghcr.io/postalserver/postal
+    command: postal requeuer
+    configs:
+      - source: postal_config
+        target: "/config"
+
+networks:
+  caddy:
+    external: true
+
+configs:
+  postal_config:
+    external: true
+
+volumes:
+  mariadb:
