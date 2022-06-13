@@ -12,8 +12,8 @@ services:
   rabbit:
     image: rabbitmq:3.8
     environment:
-      - RABITMQ_DEFAULT_USER=postal
-      - RABITMQ_DEFAULT_PASS
+      - RABBITMQ_DEFAULT_USER=postal
+      - RABBITMQ_DEFAULT_PASS
       - RABBITMQ_DEFAULT_VHOST=postal
 
 
