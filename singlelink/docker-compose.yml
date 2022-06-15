@@ -60,3 +60,7 @@ configs:
 secrets:
   borgmatic-ssh-singlelink:
     external: true
+
+networks:
+  caddy:
+    external: true
