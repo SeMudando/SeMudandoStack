@@ -47,6 +47,7 @@ services:
     secrets:
       - source: borgmatic-ssh-singlelink
         target: /root/.ssh/id_rsa
+        mode: 600
 
 volumes:
   postgres: {}
