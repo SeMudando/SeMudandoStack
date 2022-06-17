@@ -29,6 +29,7 @@ services:
       - PASSWORD
     networks:
       - caddy
+      - default
     labels:
       caddy: links.semudando.com.br
       caddy.reverse_proxy: "{{upstreams 3000}}"
