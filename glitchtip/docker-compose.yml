@@ -39,6 +39,7 @@ services:
     environment:
       - DATABASE_URL=postgres://postgres:postgres@postgres:5432/postgres
       - DEFAULT_FROM_EMAIL=glitchtip@semudando.com.br
+      - EMAIL_URL # Comes from env
       - SECRET_KEY # Comes from env
     restart: unless-stopped
 
