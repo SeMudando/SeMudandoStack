@@ -22,6 +22,7 @@ services:
       - PORT=8000
       - GLITCHTIP_DOMAIN=https://glitchtip.semudando.com.br
       - DEFAULT_FROM_EMAIL=glitchtip@semudando.com.br
+      - EMAIL_URL # Comes from env
       - SECRET_KEY # Comes from env
     restart: unless-stopped
     networks:
