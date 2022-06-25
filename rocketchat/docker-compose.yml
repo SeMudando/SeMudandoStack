@@ -51,6 +51,16 @@ services:
         target: /root/.ssh/id_rsa
         mode: 0600
 
+configs:
+  borgmatic-config-rocketchat:
+    external: true
+  borgmatic-crontab-rocketchat:
+    external: true
+
+secrets:
+  borgmatic-ssh-rocketchat:
+    external: true
+
 volumes:
   mongodb: {}
 
