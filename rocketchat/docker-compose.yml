@@ -1,0 +1,59 @@
+version: "3.8"
+
+services:
+  rocketchat:
+    image: registry.rocket.chat/rocketchat/rocket.chat:4.7.1
+    command: >
+      bash -c
+        "for i in `seq 1 30`; do
+          node main.js &&
+          s=$$? && break || s=$$?;
+          echo \"Tried $$i times. Waiting 5 secs...\";
+          sleep 5;
+        done; (exit $$s)"
+    restart: unless-stopped
+    environment:
+      - PORT=3000
+      - ROOT_URL=https://chat.semudando.com.br
+      - MONGO_URL=mongodb://mongo:27017/rocketchat
+      - MONGO_OPLOG_URL=mongodb://mongo:27017/local?replSet=rs0
+      - OVERWRITE_SETTING_Accounts_TwoFactorAuthentication_Enabled=false
+      - OVERWRITE_SETTING_Accounts_TwoFactorAuthentication_Enforce_Password_Fallback=false
+    depends_on:
+      - mongo
+    networks:
+      - default
+      - caddy
+    labels:
+      caddy: chat.semudando.com.br
+      caddy.reverse_proxy: "{{upstreams 3000}}"
+
+  mongo:
+    image: mongo:4.2.16
+    restart: unless-stopped
+    volumes:
+      - mongodb:/data/db
+    command: mongod --oplogSize 128 --replSet rs0
+
+  borgmatic:
+    image: b3vis/borgmatic
+    volumes:
+      - mongodb:/data:ro
+    environment:
+      - BORG_PASSPHRASE
+    configs:
+      - source: borgmatic-config-rocketchat
+        target: /etc/borgmatic/config.yaml
+      - source: borgmatic-crontab-rocketchat
+        target: /etc/borgmatic/crontab.txt
+    secrets:
+      - source: borgmatic-ssh-rocketchat
+        target: /root/.ssh/id_rsa
+        mode: 0600
+
+volumes:
+  mongodb: {}
+
+networks:
+  caddy:
+    external: true
