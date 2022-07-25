@@ -11,6 +11,8 @@ services:
       - postgres:/var/lib/postgresql/data
   odoo:
     image: odoo:14.0
+    environment:
+      - POSTGRES_PASSWORD
     depends_on:
       - db
     labels:
