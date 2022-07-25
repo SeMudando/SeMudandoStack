@@ -39,18 +39,18 @@ services:
       - source: borgmatic-crontab-odoo
         target: /etc/borgmatic/crontab.txt
     secrets:
-      - source: borgmatic-ssh-nextcloud
+      - source: borgmatic-ssh-odoo
         target: /root/.ssh/id_rsa
         mode: 0600
 
 configs:
-  borgmatic-config-nextcloud:
+  borgmatic-config-odoo:
     external: true
-  borgmatic-crontab-nextcloud:
+  borgmatic-crontab-odoo:
     external: true
 
 secrets:
-  borgmatic-ssh-nextcloud:
+  borgmatic-ssh-odoo:
     external: true
 
 networks:
