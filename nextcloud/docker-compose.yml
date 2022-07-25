@@ -85,9 +85,9 @@ services:
       - BORG_PASSPHRASE
     configs:
       - source: borgmatic-config-nextcloud
-        target: /etc/borgmatic/config.yaml
+        target: /etc/borgmatic.d/config.yaml
       - source: borgmatic-crontab-nextcloud
-        target: /etc/borgmatic/crontab.txt
+        target: /etc/borgmatic.d/crontab.txt
     secrets:
       - source: borgmatic-ssh-nextcloud
         target: /root/.ssh/id_rsa

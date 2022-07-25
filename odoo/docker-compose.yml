@@ -38,9 +38,9 @@ services:
       - BORG_PASSPHRASE
     configs:
       - source: borgmatic-config-odoo
-        target: /etc/borgmatic/config.yaml
+        target: /etc/borgmatic.d/config.yaml
       - source: borgmatic-crontab-odoo
-        target: /etc/borgmatic/crontab.txt
+        target: /etc/borgmatic.d/crontab.txt
     secrets:
       - source: borgmatic-ssh-odoo
         target: /root/.ssh/id_rsa

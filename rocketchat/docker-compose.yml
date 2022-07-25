@@ -43,9 +43,9 @@ services:
       - BORG_PASSPHRASE
     configs:
       - source: borgmatic-config-rocketchat
-        target: /etc/borgmatic/config.yaml
+        target: /etc/borgmatic.d/config.yaml
       - source: borgmatic-crontab-rocketchat
-        target: /etc/borgmatic/crontab.txt
+        target: /etc/borgmatic.d/crontab.txt
     secrets:
       - source: borgmatic-ssh-rocketchat
         target: /root/.ssh/id_rsa
