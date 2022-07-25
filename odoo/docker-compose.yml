@@ -21,6 +21,9 @@ services:
     volumes:
       - addons:/mnt/extra-addons
       - odoo:/var/lib/odoo
+    networks:
+      - default
+      - caddy
 
   backup:
     image: b3vis/borgmatic
