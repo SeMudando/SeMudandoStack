@@ -1,0 +1,62 @@
+version: "3.8"
+
+services:
+  db:
+    image: postgres:13
+    environment:
+      - POSTGRES_DB=postgres
+      - POSTGRES_USER=odoo
+      - POSTGRES_PASSWORD
+    volumes:
+      - postgres:/var/lib/postgresql/data
+  odoo:
+    image: odoo:14.0
+    depends_on:
+      - db
+    labels:
+      caddy: odoo.semudando.com.br
+      caddy.reverse_proxy: "{{upstreams 8069}}"
+    volumes:
+      - addons:/mnt/extra-addons
+      - odoo:/var/lib/odoo
+
+  backup:
+    image: b3vis/borgmatic
+    depends_on:
+      - db
+      - odoo
+    volumes:
+      - postgres:/data/postgres:ro
+      - odoo:/data/odoo:ro
+      - addons:/data/addons:ro
+    environment:
+      - BORG_PASSPHRASE
+    configs:
+      - source: borgmatic-config-odoo
+        target: /etc/borgmatic/config.yaml
+      - source: borgmatic-crontab-odoo
+        target: /etc/borgmatic/crontab.txt
+    secrets:
+      - source: borgmatic-ssh-nextcloud
+        target: /root/.ssh/id_rsa
+        mode: 0600
+
+configs:
+  borgmatic-config-nextcloud:
+    external: true
+  borgmatic-crontab-nextcloud:
+    external: true
+
+secrets:
+  borgmatic-ssh-nextcloud:
+    external: true
+
+networks:
+  caddy:
+    external: true
+
+
+volumes:
+  odoo:
+  addons:
+  postgres:
