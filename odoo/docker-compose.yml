@@ -10,7 +10,7 @@ services:
     volumes:
       - postgres:/var/lib/postgresql/data
   odoo:
-    image: odoo:14.0
+    image: odoo:15.0
     environment:
       - PASSWORD  # Actually postgres password
     depends_on:
