@@ -29,3 +29,7 @@ services:
       caddy.reverse_proxy: "{{upstreams}}"
 volumes:
   db_data: {}
+
+networks:
+  caddy:
+    external: true
