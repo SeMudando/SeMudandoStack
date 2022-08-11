@@ -3,8 +3,6 @@ version: "3.8"
 services:
   littlelink-custom:
     image: julianprieber/littlelink-custom
-    environment:
-      - APP_URL=http://littlelink.semudando.com.br/
     networks:
       - caddy
     labels:
