@@ -7,6 +7,7 @@ services:
       - LOG_LEVEL=debug
       - HTTP_HOST=https://littlelink.semudando.com.br
       - SERVER_NAME=littlelink.semudando.com.br
+      - FORCE_HTTPS=true
     networks:
       - caddy
     labels:
