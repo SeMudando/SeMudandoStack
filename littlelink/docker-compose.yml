@@ -1,0 +1,14 @@
+version: "3.8"
+
+services:
+  littlelink-custom:
+    image: julianprieber/littlelink-custom
+    networks:
+      - caddy
+    labels:
+      caddy: littlelink.semudando.com.br
+      caddy.reverse_proxy: "{{upstreams}}"
+
+networks:
+  caddy:
+    external: true
