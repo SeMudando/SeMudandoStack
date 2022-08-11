@@ -5,6 +5,7 @@ services:
     image: julianprieber/littlelink-custom
     environment:
       - APP_URL=https://littlelink.semudando.com.br
+      - FORCE_HTTPS=true
     networks:
       - caddy
     labels:
