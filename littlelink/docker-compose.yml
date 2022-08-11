@@ -9,7 +9,7 @@ services:
       - caddy
     labels:
       caddy: littlelink.semudando.com.br
-      caddy.reverse_proxy: "{{upstreams}}"
+      caddy.reverse_proxy: "{{upstreams 80}}"
 
 networks:
   caddy:
