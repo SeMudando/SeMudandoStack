@@ -6,6 +6,7 @@ services:
     environment:
       - LOG_LEVEL=debug
       - HTTP_HOST=https://littlelink.semudando.com.br
+      - SERVER_NAME=littlelink.semudando.com.br
     networks:
       - caddy
     labels:
