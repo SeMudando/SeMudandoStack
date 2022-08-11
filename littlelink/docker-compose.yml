@@ -4,12 +4,12 @@ services:
   littlelink-custom:
     image: julianprieber/littlelink-custom
     environment:
-      - APP_URL=https://littlelink.semudando.com.br/
+      - APP_URL=http://littlelink.semudando.com.br/
     networks:
       - caddy
     labels:
       caddy: littlelink.semudando.com.br
-      caddy.reverse_proxy: "{{upstreams https}}"
+      caddy.reverse_proxy: "{{upstreams 80}}"
 
 networks:
   caddy:
