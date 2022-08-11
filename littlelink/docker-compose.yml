@@ -4,7 +4,7 @@ services:
   littlelink-custom:
     image: julianprieber/littlelink-custom
     environment:
-      - APP_URL=https://localhost
+      - APP_URL=https://littlelink.semudando.com.br/
     networks:
       - caddy
     labels:
