@@ -3,6 +3,8 @@ version: "3.8"
 services:
   littlelink-custom:
     image: julianprieber/littlelink-custom
+    environment:
+      - FORCE_HTTPS=true
     networks:
       - caddy
     labels:
