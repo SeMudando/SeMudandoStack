@@ -5,7 +5,6 @@ services:
     image: julianprieber/littlelink-custom
     environment:
       - HTTPS_SERVER_NAME=littlelink.semudando.com.br
-      - HTTP_SERVER_NAME=littlelink.semudando.com.br
     networks:
       - caddy
     labels:
