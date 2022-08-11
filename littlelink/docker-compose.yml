@@ -4,8 +4,7 @@ services:
   littlelink-custom:
     image: julianprieber/littlelink-custom
     environment:
-      - HTTP_HOST=https://littlelink.semudando.com.br
-      - TRUSTED_PROXIES=198.27.69.213
+      - APP_URL=https://littlelink.semudando.com.br
     networks:
       - caddy
     labels:
