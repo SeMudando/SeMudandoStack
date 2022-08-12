@@ -39,6 +39,7 @@ services:
     image: b3vis/borgmatic
     volumes:
       - mongodb:/data:ro
+      - ssh:/root/.ssh/:ro
     environment:
       - BORG_PASSPHRASE
     configs:
@@ -46,10 +47,6 @@ services:
         target: /etc/borgmatic.d/config.yaml
       - source: borgmatic-crontab-rocketchat
         target: /etc/borgmatic.d/crontab.txt
-    secrets:
-      - source: borgmatic-ssh-rocketchat
-        target: /root/.ssh/id_rsa
-        mode: 0600
 
 configs:
   borgmatic-config-rocketchat:
@@ -57,12 +54,10 @@ configs:
   borgmatic-crontab-rocketchat:
     external: true
 
-secrets:
-  borgmatic-ssh-rocketchat:
-    external: true
-
 volumes:
   mongodb: {}
+  ssh:
+    external: true
 
 networks:
   caddy:
