@@ -82,7 +82,7 @@ services:
     volumes:
       - database:/data/database:ro
       - nextcloud:/data/nextcloud:ro
-      - ssh:/root/.ssh/id_rsa:ro
+      - ssh:/root/.ssh/:ro
     environment:
       - BORG_PASSPHRASE
     configs:
