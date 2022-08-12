@@ -82,6 +82,7 @@ services:
     volumes:
       - database:/data/database:ro
       - nextcloud:/data/nextcloud:ro
+      - ssh:/root/.ssh/id_rsa:ro
     environment:
       - BORG_PASSPHRASE
     configs:
@@ -89,11 +90,6 @@ services:
         target: /etc/borgmatic.d/config.yaml
       - source: borgmatic-crontab-nextcloud
         target: /etc/borgmatic.d/crontab.txt
-    secrets:
-      - source: borgmatic-ssh-nextcloud
-        target: /root/.ssh/id_rsa
-        mode: 0600
-
 
 configs:
   borgmatic-config-nextcloud:
@@ -112,3 +108,5 @@ networks:
 volumes:
   database:
   nextcloud:
+  ssh:
+    external: true
