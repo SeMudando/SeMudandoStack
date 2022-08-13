@@ -38,6 +38,7 @@ services:
     image: b3vis/borgmatic
     volumes:
       - postgres:/data:ro
+      - ssh:/root/.ssh/
     environment:
       - BORG_PASSPHRASE
     configs:
@@ -45,22 +46,16 @@ services:
         target: /etc/borgmatic.d/config.yaml
       - source: borgmatic-crontab-singlelink
         target: /etc/borgmatic.d/crontab.txt
-    secrets:
-      - source: borgmatic-ssh-singlelink
-        target: /root/.ssh/id_rsa
-        mode: 0600
 
 volumes:
   postgres: {}
+  ssh:
+    external: true
 
 configs:
   borgmatic-config-singlelink:
     external: true
   borgmatic-crontab-singlelink:
-    external: true
-
-secrets:
-  borgmatic-ssh-singlelink:
     external: true
 
 networks:
