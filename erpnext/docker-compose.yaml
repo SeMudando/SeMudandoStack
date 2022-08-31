@@ -4,7 +4,7 @@ services:
   configurator:
     image: frappe/erpnext-worker:v14
     command:
-      - configure.py && sleep infinity
+      - configure.py
     environment:
       DB_HOST: db
       DB_PORT: "3306"
@@ -80,7 +80,7 @@ services:
       - sites:/home/frappe/frappe-bench/sites
 
   websocket:
-    image: frappe/frappe-socketio:v14.5.0
+    image: frappe/frappe-socketio:v14
     volumes:
       - sites:/home/frappe/frappe-bench/sites
 
