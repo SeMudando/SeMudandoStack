@@ -17,7 +17,7 @@ services:
 
   bench:
     image: frappe/bench
-    command: tail -f /dev/null
+    command: tail -F anything
     volumes:
       - sites:/home/frappe/frappe-bench/sites
       - assets:/home/frappe/frappe-bench/sites/assets
