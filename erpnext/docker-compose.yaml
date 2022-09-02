@@ -16,7 +16,7 @@ services:
       - sites:/home/frappe/frappe-bench/sites
 
   bench:
-    image: frappe/bench:v14
+    image: frappe/bench
     volumes:
       - sites:/home/frappe/frappe-bench/sites
       - assets:/home/frappe/frappe-bench/sites/assets
