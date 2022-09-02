@@ -15,6 +15,12 @@ services:
     volumes:
       - sites:/home/frappe/frappe-bench/sites
 
+  bench:
+    image: frappe/bench:v14
+    volumes:
+      - sites:/home/frappe/frappe-bench/sites
+      - assets:/home/frappe/frappe-bench/sites/assets
+
   backend:
     image: frappe/erpnext-worker:v14
     volumes:
