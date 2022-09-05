@@ -2,7 +2,7 @@ version: "3.8"
 
 services:
   configurator:
-    image: frappe/erpnext-worker:v14
+    image: semudando/frappe-worker:1.0.0
     command:
       - configure.py
     environment:
@@ -17,7 +17,7 @@ services:
 
 
   backend:
-    image: frappe/erpnext-worker:v14
+    image: semudando/frappe-worker:1.0.0
     volumes:
       - sites:/home/frappe/frappe-bench/sites
       - assets:/home/frappe/frappe-bench/sites/assets
@@ -35,7 +35,7 @@ services:
       - db-data:/var/lib/mysql
 
   frontend:
-    image: frappe/erpnext-nginx:v14
+    image: semudando/frappe-nginx:1.0.0
     environment:
       BACKEND: backend:8000
       FRAPPE_SITE_NAME_HEADER: semudando
@@ -54,19 +54,19 @@ services:
       - caddy
 
   queue-default:
-    image: frappe/erpnext-worker:v14
+    image: semudando/frappe-worker:1.0.0
     command: bench worker --queue default
     volumes:
       - sites:/home/frappe/frappe-bench/sites
 
   queue-long:
-    image: frappe/erpnext-worker:v14
+    image: semudando/frappe-worker:1.0.0
     command: bench worker --queue long
     volumes:
       - sites:/home/frappe/frappe-bench/sites
 
   queue-short:
-    image: frappe/erpnext-worker:v14
+    image: semudando/frappe-worker:1.0.0
     command: bench worker --queue short
     volumes:
       - sites:/home/frappe/frappe-bench/sites
@@ -75,7 +75,7 @@ services:
     image: redis:6.2-alpine
 
   scheduler:
-    image: frappe/erpnext-worker:v14
+    image: semudando/frappe-worker:1.0.0
     command: bench schedule
     volumes:
       - sites:/home/frappe/frappe-bench/sites
