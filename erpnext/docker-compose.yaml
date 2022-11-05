@@ -16,6 +16,21 @@ services:
       - sites:/home/frappe/frappe-bench/sites
 
 
+  backup:
+    image: b3vis/borgmatic
+    volumes:
+      - sites:/data/sites:ro
+      - assets:/data/assets:ro
+      - db-data:/data/db-data:ro
+      - ssh:/root/.ssh/:ro
+    environment:
+      - BORG_PASSPHRASE
+    configs:
+      - source: borgmatic-config-erpnext
+        target: /etc/borgmatic.d/config.yaml
+      - source: borgmatic-crontab-erpnext
+        target: /etc/borgmatic.d/crontab.txt
+
   backend:
     image: semudando/frappe-worker:1.0.0
     volumes:
@@ -85,10 +100,18 @@ services:
     volumes:
       - sites:/home/frappe/frappe-bench/sites
 
+configs:
+  borgmatic-config-erpnext:
+    external: true
+  borgmatic-crontab-erpnext:
+    external: true
+
 volumes:
   assets:
   db-data:
   sites:
+  ssh:
+    external: true
 
 networks:
   caddy:
