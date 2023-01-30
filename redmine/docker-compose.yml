@@ -23,6 +23,10 @@ services:
     volumes:
       - database:/var/lib/mysql
 
+volumes:
+  database: {}
+  redmine: {}
+
 networks:
   caddy:
     external: true
