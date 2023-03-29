@@ -18,7 +18,7 @@ services:
 
 
   manager:
-    image: ghcr.io/postalserver/postal
+    image: ghcr.io/postalserver/postal:2.1.2
     command: tail -f /dev/null
     configs:
       - source: postal_config
@@ -26,7 +26,7 @@ services:
 
 
   web:
-    image: ghcr.io/postalserver/postal
+    image: ghcr.io/postalserver/postal:2.1.2
     command: postal web-server
     configs:
       - source: postal_config
@@ -43,10 +43,10 @@ services:
       caddy.reverse_proxy: "{{upstreams http 5000}}"
 
   smtp:
-    image: ghcr.io/postalserver/postal
+    image: ghcr.io/postalserver/postal:2.1.2
     command: postal smtp-server
     ports:
-      - "0.0.0.0:25:25"
+      - "25:25"
     cap_add:
       - NET_BIND_SERVICE
     configs:
@@ -58,7 +58,7 @@ services:
         mode: 644
 
   worker:
-    image: ghcr.io/postalserver/postal
+    image: ghcr.io/postalserver/postal:2.1.2
     command: postal worker
     configs:
       - source: postal_config
@@ -69,7 +69,7 @@ services:
         mode: 644
 
   cron:
-    image: ghcr.io/postalserver/postal
+    image: ghcr.io/postalserver/postal:2.1.2
     command: postal cron
     configs:
       - source: postal_config
@@ -80,7 +80,7 @@ services:
         mode: 644
 
   requeuer:
-    image: ghcr.io/postalserver/postal
+    image: ghcr.io/postalserver/postal:2.1.2
     command: postal requeuer
     configs:
       - source: postal_config
