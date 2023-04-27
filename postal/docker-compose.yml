@@ -90,6 +90,20 @@ services:
         target: "/config/signing.key"
         mode: 644
 
+  borgmatic:
+    image: b3vis/borgmatic
+    volumes:
+      - mariadb:/data:ro
+      - ssh:/root/.ssh/:ro
+    environment:
+      - BORG_PASSPHRASE
+    configs:
+      - source: borgmatic-config-postal
+        target: /etc/borgmatic.d/config.yaml
+      - source: borgmatic-crontab-postal
+        target: /etc/borgmatic.d/crontab.txt
+
+
 networks:
   caddy:
     external: true
@@ -97,10 +111,16 @@ networks:
 configs:
   postal_config:
     external: true
+  borgmatic-config-postal:
+    external: true
+  borgmatic-crontab-postal:
+    external: true
 
 secrets:
   postal_signing_key:
     external: true
 
 volumes:
-  mariadb:
+  mariadb: {}
+  ssh:
+    external: true
