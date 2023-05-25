@@ -2,7 +2,7 @@ version: "3.8"
 
 services:
   configurator:
-    image: semudando/frappe-worker:1.1.0
+    image: semudando/erpnext:1.1.0
     restart: "no"
     entrypoint:
       - bash
@@ -26,12 +26,12 @@ services:
       - sites:/home/frappe/frappe-bench/sites
 
   backend:
-    image: semudando/frappe-worker:1.1.0
+    image: semudando/erpnext:1.1.0
     volumes:
       - sites:/home/frappe/frappe-bench/sites
 
   frontend:
-    image: semudando/frappe-nginx:1.1.0
+    image: semudando/erpnext:1.1.0
     command:
       - nginx-entrypoint.sh
     environment:
@@ -51,30 +51,30 @@ services:
       - caddy
 
   queue-default:
-    image: semudando/frappe-worker:1.1.0
+    image: semudando/erpnext:1.1.0
     command: bench worker --queue default
     volumes:
       - sites:/home/frappe/frappe-bench/sites
 
   queue-long:
-    image: semudando/frappe-worker:1.1.0
+    image: semudando/erpnext:1.1.0
     command: bench worker --queue long
     volumes:
       - sites:/home/frappe/frappe-bench/sites
 
   queue-short:
-    image: semudando/frappe-worker:1.1.0
+    image: semudando/erpnext:1.1.0
     command: bench worker --queue short
     volumes:
       - sites:/home/frappe/frappe-bench/sites
   scheduler:
-    image: semudando/frappe-worker:1.1.0
+    image: semudando/erpnext:1.1.0
     command: bench schedule
     volumes:
       - sites:/home/frappe/frappe-bench/sites
 
   websocket:
-    image: frappe/frappe-socketio:v14
+    image: frappe/erpnext:v14
     volumes:
       - sites:/home/frappe/frappe-bench/sites
 
