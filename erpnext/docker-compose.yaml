@@ -2,9 +2,19 @@ version: "3.8"
 
 services:
   configurator:
-    image: semudando/frappe-worker:1.0.0
+    image: semudando/frappe-worker:1.1.0
+    restart: no
+    entrypoint:
+      - bash
+      - -c
     command:
-      - configure.py
+      - >
+        bench set-config -g db_host $$DB_HOST;
+        bench set-config -gp db_port $$DB_PORT;
+        bench set-config -g redis_cache "redis://$$REDIS_CACHE";
+        bench set-config -g redis_queue "redis://$$REDIS_QUEUE";
+        bench set-config -g redis_socketio "redis://$$REDIS_SOCKETIO";
+        bench set-config -gp socketio_port $$SOCKETIO_PORT;
     environment:
       DB_HOST: db
       DB_PORT: "3306"
@@ -15,12 +25,67 @@ services:
     volumes:
       - sites:/home/frappe/frappe-bench/sites
 
+  backend:
+    image: semudando/frappe-worker:1.1.0
+    volumes:
+      - sites:/home/frappe/frappe-bench/sites
+
+  frontend:
+    image: semudando/frappe-nginx:1.1.0
+    command:
+      - nginx-entrypoint.sh
+    environment:
+      BACKEND: backend:8000
+      FRAPPE_SITE_NAME_HEADER: semudando
+      SOCKETIO: websocket:9000
+      UPSTREAM_REAL_IP_ADDRESS: 127.0.0.1
+      UPSTREAM_REAL_IP_HEADER: X-Forwarded-For
+      UPSTREAM_REAL_IP_RECURSIVE: "off"
+    volumes:
+      - sites:/home/frappe/frappe-bench/sites
+    labels:
+      caddy: erpnext.semudando.com.br
+      caddy.reverse_proxy: "{{upstreams 8080}}"
+    networks:
+      - default
+      - caddy
+
+  queue-default:
+    image: semudando/frappe-worker:1.1.0
+    command: bench worker --queue default
+    volumes:
+      - sites:/home/frappe/frappe-bench/sites
+
+  queue-long:
+    image: semudando/frappe-worker:1.1.0
+    command: bench worker --queue long
+    volumes:
+      - sites:/home/frappe/frappe-bench/sites
+
+  queue-short:
+    image: semudando/frappe-worker:1.1.0
+    command: bench worker --queue short
+    volumes:
+      - sites:/home/frappe/frappe-bench/sites
+  scheduler:
+    image: semudando/frappe-worker:1.1.0
+    command: bench schedule
+    volumes:
+      - sites:/home/frappe/frappe-bench/sites
+
+  websocket:
+    image: frappe/frappe-socketio:v14
+    volumes:
+      - sites:/home/frappe/frappe-bench/sites
+
+  redis:
+    image: redis:6.2-alpine
+
 
   backup:
     image: b3vis/borgmatic
     volumes:
       - sites:/data/sites:ro
-      - assets:/data/assets:ro
       - db-data:/data/db-data:ro
       - ssh:/root/.ssh/:ro
     environment:
@@ -30,12 +95,6 @@ services:
         target: /etc/borgmatic.d/config.yaml
       - source: borgmatic-crontab-erpnext
         target: /etc/borgmatic.d/crontab.txt
-
-  backend:
-    image: semudando/frappe-worker:1.0.0
-    volumes:
-      - sites:/home/frappe/frappe-bench/sites
-      - assets:/home/frappe/frappe-bench/sites/assets
 
   db:
     image: mariadb:10.6
@@ -49,57 +108,6 @@ services:
     volumes:
       - db-data:/var/lib/mysql
 
-  frontend:
-    image: semudando/frappe-nginx:1.0.0
-    environment:
-      BACKEND: backend:8000
-      FRAPPE_SITE_NAME_HEADER: semudando
-      SOCKETIO: websocket:9000
-      UPSTREAM_REAL_IP_ADDRESS: 127.0.0.1
-      UPSTREAM_REAL_IP_HEADER: X-Forwarded-For
-      UPSTREAM_REAL_IP_RECURSIVE: "off"
-    volumes:
-      - sites:/usr/share/nginx/html/sites
-      - assets:/usr/share/nginx/html/assets
-    labels:
-      caddy: erpnext.semudando.com.br
-      caddy.reverse_proxy: "{{upstreams 8080}}"
-    networks:
-      - default
-      - caddy
-
-  queue-default:
-    image: semudando/frappe-worker:1.0.0
-    command: bench worker --queue default
-    volumes:
-      - sites:/home/frappe/frappe-bench/sites
-
-  queue-long:
-    image: semudando/frappe-worker:1.0.0
-    command: bench worker --queue long
-    volumes:
-      - sites:/home/frappe/frappe-bench/sites
-
-  queue-short:
-    image: semudando/frappe-worker:1.0.0
-    command: bench worker --queue short
-    volumes:
-      - sites:/home/frappe/frappe-bench/sites
-
-  redis:
-    image: redis:6.2-alpine
-
-  scheduler:
-    image: semudando/frappe-worker:1.0.0
-    command: bench schedule
-    volumes:
-      - sites:/home/frappe/frappe-bench/sites
-
-  websocket:
-    image: frappe/frappe-socketio:v14
-    volumes:
-      - sites:/home/frappe/frappe-bench/sites
-
 configs:
   borgmatic-config-erpnext:
     external: true
@@ -107,7 +115,6 @@ configs:
     external: true
 
 volumes:
-  assets:
   db-data:
   sites:
   ssh:
