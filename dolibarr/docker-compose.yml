@@ -42,7 +42,7 @@ services:
       - caddy
       - default
     labels:
-      caddy: dolibarr.colman.com.br
+      caddy: dolibarr.semudando.com.br
       caddy.reverse_proxy: "{{upstreams}}"
 
 
