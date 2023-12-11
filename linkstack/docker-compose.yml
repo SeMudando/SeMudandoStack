@@ -17,7 +17,7 @@ services:
       - caddy
     labels:
       caddy: links.semudando.com.br
-      caddy.reverse_proxy: "{{upstreams 443}}"
+      caddy.reverse_proxy: "{{upstreams}}"
 
 volumes:
   linkstack:
