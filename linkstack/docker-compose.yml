@@ -18,7 +18,7 @@ services:
     labels:
       caddy: links.semudando.com.br
       caddy.reverse_proxy: "{{upstreams 80}}"
-      caddy.Content-Security-Policy: "upgrade-insecure-requests"
+      caddy.header.Content-Security-Policy: "upgrade-insecure-requests"
 
 volumes:
   linkstack:
