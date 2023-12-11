@@ -8,8 +8,8 @@ services:
       - linkstack:/htdocs
     environment:
       - SERVER_ADMIN=admin@semudando.com.br
-      - HTTPS_SERVER_NAME=https://links.semudando.com.br
-      - HTTP_SERVER_NAME=https://links.semudando.com.br
+      - HTTPS_SERVER_NAME=links.semudando.com.br
+      - HTTP_SERVER_NAME=links.semudando.com.br
       - PHP_MEMORY_LIMIT=512M
       - UPLOAD_MAX_FILESIZE=512M
     restart: always
