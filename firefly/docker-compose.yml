@@ -1,0 +1,62 @@
+version: '3.3'
+
+services:
+  db:
+    image: mariadb:lts
+    env_file: .db.env
+    environment:
+      - MYSQL_RANDOM_ROOT_PASSWORD=true
+      - MYSQL_USER=firefly
+      - MYSQL_DATABASE=firefly
+      - MYSQL_PASSWORD
+    volumes:
+      - firefly_iii_db:/var/lib/mysql
+
+  app:
+    image: fireflyiii/core:latest
+    volumes:
+      - firefly_iii_upload:/var/www/html/storage/upload
+    environment:
+      - APP_ENV=production
+      - APP_DEBUG=false
+      - SITE_OWNER=admin@semudando.com.br
+      - APP_KEY
+      - DEFAULT_LANGUAGE=pt_BR
+      - DEFAULT_LOCALE=equal
+      - TZ=America/Sao_Paulo
+      - TRUSTED_PROXIES=**
+      - LOG_CHANNEL=stack
+      - APP_LOG_LEVEL=notice
+      - AUDIT_LOG_LEVEL-emergency
+      - DB_CONNECCTION=mysql
+      - DB_HOST=db
+      - DB_DATABASE=firefly
+      - DB_USERNAME=firefly
+      - DB_PASSWORD
+      - APP_URL=https://firefly.semudando.com.br
+    depends_on:
+      - db
+    labels:
+      caddy: firefly.semudando.com.br
+      caddy.reverse_proxy: "{{upstreams 8080}}"
+    networks:
+      - caddy
+      - default
+
+  cron:
+    #
+    # To make this work, set STATIC_CRON_TOKEN in your .env file or as an environment variable and replace REPLACEME below
+    # The STATIC_CRON_TOKEN must be *exactly* 32 characters long
+    #
+    image: alpine
+    command: sh -c "echo \"0 3 * * * wget -qO- http://app:8080/api/v1/cron/$STATIC_CRON_TOKEN\" | crontab - && crond -f -L /dev/stdout"
+    environment:
+      - STATIC_CRON_TOKEN
+
+volumes:
+  firefly_iii_upload:
+  firefly_iii_db:
+
+networks:
+  firefly_iii:
+    driver: bridge
