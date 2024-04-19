@@ -3,7 +3,6 @@ version: '3.3'
 services:
   db:
     image: mariadb:lts
-    env_file: .db.env
     environment:
       - MYSQL_RANDOM_ROOT_PASSWORD=true
       - MYSQL_USER=firefly
@@ -58,5 +57,5 @@ volumes:
   firefly_iii_db:
 
 networks:
-  firefly_iii:
-    driver: bridge
+  caddy:
+    external: true
