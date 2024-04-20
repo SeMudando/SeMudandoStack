@@ -42,6 +42,18 @@ services:
       - caddy
       - default
 
+  importer:
+    image: fireflyiii/data-importer:latest
+    depends_on:
+      - app
+    environment:
+      - FIREFLY_III_URL=https://firefly.semudando.com.br
+      - VANITY_URL=https://firefly.semudando.com.br
+      - FIREFLY_III_ACCESS_TOKEN
+      - FIREFLY_III_CLIENT_ID
+      - TZ=America/Sao_Paulo
+
+
   cron:
     #
     # To make this work, set STATIC_CRON_TOKEN in your .env file or as an environment variable and replace REPLACEME below
