@@ -52,6 +52,7 @@ services:
       - FIREFLY_III_ACCESS_TOKEN
       - FIREFLY_III_CLIENT_ID
       - TZ=America/Sao_Paulo
+      - TRUSTED_PROXIES=**
     networks:
       - caddy
       - default
