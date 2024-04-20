@@ -48,7 +48,7 @@ services:
       - app
     environment:
       - FIREFLY_III_URL=https://firefly.semudando.com.br
-      - VANITY_URL=http://importer.firefly.semudando.com.br
+      - VANITY_URL=https://importer.firefly.semudando.com.br
       - FIREFLY_III_ACCESS_TOKEN
       - FIREFLY_III_CLIENT_ID
       - TZ=America/Sao_Paulo
