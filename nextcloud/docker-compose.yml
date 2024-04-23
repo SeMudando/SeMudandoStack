@@ -14,7 +14,7 @@ services:
     image: redis:alpine
 
   nextcloud:
-    image: nextcloud:27-apache
+    image: nextcloud:28-apache
     networks:
       - caddy
       - default
