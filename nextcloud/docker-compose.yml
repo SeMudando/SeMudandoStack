@@ -14,7 +14,7 @@ services:
     image: redis:alpine
 
   nextcloud:
-    image: nextcloud:28-apache
+    image: nextcloud:apache
     networks:
       - caddy
       - default
@@ -70,7 +70,7 @@ services:
       caddy.reverse_proxy: "{{upstreams 9980}}"
 
   cron:
-    image: nextcloud:28-apache
+    image: nextcloud:apache
     volumes:
       - nextcloud:/var/www/html
     entrypoint: /cron.sh
