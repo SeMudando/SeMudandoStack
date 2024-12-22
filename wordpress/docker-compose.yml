@@ -10,6 +10,8 @@ services:
       - MARIADB_USER=wordpress
       - MARIADB_PASSWORD
       - MARIADB_ROOT_PASSWORD
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-p${MARIADB_ROOT_PASSWORD}"]
 
   wordpress:
     image: wordpress:6
@@ -28,25 +30,24 @@ services:
     labels:
       caddy: "semudando.com.br www.semudando.com.br wordpress.semudando.com.br doar.semudando.com.br"
       caddy.reverse_proxy: "{{upstreams 80}}"
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost" ]
 
-  backup:
+  borgmatic:
     image: b3vis/borgmatic
     volumes:
-      - database:/data/database:ro
-      - wordpress:/data/wordpress:ro
-      - ssh:/root/.ssh/:ro
+      - database:/data/database
+      - wordpress:/data/wordpress
+      - ssh:/root/.ssh/
     environment:
       - BORG_PASSPHRASE
+      - BACKUP_CRON=0 1 * * * # Remove when https://github.com/borgmatic-collective/docker-borgmatic/issues/375 is fixed
     configs:
-      - source: borgmatic-config-wordpress
+      - source: borgmatic-config-wordpress-semudando
         target: /etc/borgmatic.d/config.yaml
-      - source: borgmatic-crontab-wordpress
-        target: /etc/borgmatic.d/crontab.txt
 
 configs:
-  borgmatic-config-wordpress:
-    external: true
-  borgmatic-crontab-wordpress:
+  borgmatic-config-wordpress-semudando:
     external: true
 
 networks:
