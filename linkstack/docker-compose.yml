@@ -12,6 +12,7 @@ services:
       - HTTP_SERVER_NAME=links.semudando.com.br
       - PHP_MEMORY_LIMIT=512M
       - UPLOAD_MAX_FILESIZE=512M
+      - LOG_LEVEL=trace8
     restart: always
     networks:
       - caddy
