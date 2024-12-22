@@ -28,7 +28,7 @@ services:
       - default
       - caddy
     labels:
-      caddy: "semudando.com.br www.semudando.com.br wordpress.semudando.com.br doar.semudando.com.br"
+      caddy: "semudando.com.br"
       caddy.reverse_proxy: "{{upstreams 80}}"
     healthcheck:
       test: [ "CMD", "curl", "-f", "http://localhost" ]
