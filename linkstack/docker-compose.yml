@@ -3,7 +3,7 @@ version: "3.8"
 services:
 
   linkstack:
-    image: linkstackorg/linkstack:b1695c90a873725c20bc3be8444b6c4e2c81d0c1e2326c8d2c2d5dfa136eb913
+    image: linkstackorg/linkstack@sha256:b1695c90a873725c20bc3be8444b6c4e2c81d0c1e2326c8d2c2d5dfa136eb913
     volumes:
       - linkstack:/htdocs
     environment:
