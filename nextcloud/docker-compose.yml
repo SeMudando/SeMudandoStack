@@ -2,7 +2,7 @@ version: "3.8"
 
 services:
   mariadb:
-    image: mariadb:10.5
+    image: mariadb:10.7
     command: --transaction-isolation=READ-COMMITTED --binlog-format=ROW
     environment:
       - MYSQL_USER
@@ -10,6 +10,7 @@ services:
       - MARIADB_ROOT_PASSWORD
     volumes:
       - database:/var/lib/mysql
+  
   redis:
     image: redis:alpine
 
@@ -35,7 +36,7 @@ services:
       - MAIL_DOMAIN=semudando.com.br
       - REDIS_HOST=redis
       - MYSQL_HOST=mariadb
-      - TRUSTED_PROXIES=198.27.69.213
+      - TRUSTED_PROXIES=95.217.46.244
       - NC_default_phone_region=BR
     volumes:
       - nextcloud:/var/www/html
@@ -50,10 +51,8 @@ services:
       caddy.rewrite_0: /.well-known/carddav /remote.php/dav
       caddy.rewrite_1: /.well-known/caldav /remote.php/dav
 
-
   collabora:
     image: collabora/code
-    restart: always
     networks:
       - caddy
     cap_add:
@@ -81,25 +80,18 @@ services:
   backup:
     image: b3vis/borgmatic
     volumes:
-      - database:/data/database:ro
-      - nextcloud:/data/nextcloud:ro
-      - ssh:/root/.ssh/:ro
+      - database:/data/database
+      - nextcloud:/data/nextcloud
+      - ssh:/root/.ssh/
     environment:
       - BORG_PASSPHRASE
+      - BACKUP_CRON=0 1 * * * # Remove when https://github.com/borgmatic-collective/docker-borgmatic/issues/375 is fixed
     configs:
-      - source: borgmatic-config-nextcloud
+      - source: borgmatic-config-nextcloud-semudando
         target: /etc/borgmatic.d/config.yaml
-      - source: borgmatic-crontab-nextcloud
-        target: /etc/borgmatic.d/crontab.txt
 
 configs:
-  borgmatic-config-nextcloud:
-    external: true
-  borgmatic-crontab-nextcloud:
-    external: true
-
-secrets:
-  borgmatic-ssh-nextcloud:
+  borgmatic-config-nextcloud-semudando:
     external: true
 
 networks:
