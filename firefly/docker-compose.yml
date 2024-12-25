@@ -1,7 +1,7 @@
 version: '3.3'
 
 services:
-  db:
+  database:
     image: mariadb:lts
     environment:
       - MYSQL_RANDOM_ROOT_PASSWORD=true
@@ -9,17 +9,16 @@ services:
       - MYSQL_DATABASE=firefly
       - MYSQL_PASSWORD
     volumes:
-      - firefly_iii_db:/var/lib/mysql
+      - database
 
   app:
     image: fireflyiii/core:latest
     volumes:
-      - firefly_iii_upload:/var/www/html/storage/upload
+      - firefly
     environment:
       - APP_ENV=production
       - APP_DEBUG=false
       - SITE_OWNER=admin@semudando.com.br
-      - APP_KEY
       - DEFAULT_LANGUAGE=pt_BR
       - DEFAULT_LOCALE=equal
       - TZ=America/Sao_Paulo
@@ -28,13 +27,14 @@ services:
       - APP_LOG_LEVEL=notice
       - AUDIT_LOG_LEVEL-emergency
       - DB_CONNECCTION=mysql
-      - DB_HOST=db
+      - DB_HOST=database
       - DB_DATABASE=firefly
       - DB_USERNAME=firefly
-      - DB_PASSWORD
       - APP_URL=https://firefly.semudando.com.br
+      - APP_KEY
+      - DB_PASSWORD
     depends_on:
-      - db
+      - database
     labels:
       caddy: firefly.semudando.com.br
       caddy.reverse_proxy: "{{upstreams 8080}}"
@@ -49,10 +49,10 @@ services:
     environment:
       - FIREFLY_III_URL=https://firefly.semudando.com.br
       - VANITY_URL=https://firefly.semudando.com.br
-      - FIREFLY_III_ACCESS_TOKEN
-      - FIREFLY_III_CLIENT_ID
       - TZ=America/Sao_Paulo
       - TRUSTED_PROXIES=**
+      - FIREFLY_III_ACCESS_TOKEN
+      - FIREFLY_III_CLIENT_ID
     networks:
       - caddy
       - default
@@ -60,11 +60,17 @@ services:
       caddy: importer.firefly.semudando.com.br
       caddy.reverse_proxy: "{{upstreams 8080}}"
 
+  cron:
+    image: alpine
+    command: sh -c "echo \"0 3 * * * wget -qO- http://app:8080/api/v1/cron/$STATIC_CRON_TOKEN\" | crontab - && crond -f -L /dev/stdout"
+    environment:
+      - STATIC_CRON_TOKEN
+  
   backup:
     image: b3vis/borgmatic
     volumes:
-      - firefly_iii_db:/data/database
-      - firefly_iii_upload:/data/firefly/
+      - database
+      - firefly
       - ssh:/root/.ssh/
     environment:
       - BORG_PASSPHRASE
@@ -73,23 +79,13 @@ services:
       - source: borgmatic-config-firefly
         target: /etc/borgmatic.d/config.yaml
 
-  cron:
-    #
-    # To make this work, set STATIC_CRON_TOKEN in your .env file or as an environment variable and replace REPLACEME below
-    # The STATIC_CRON_TOKEN must be *exactly* 32 characters long
-    #
-    image: alpine
-    command: sh -c "echo \"0 3 * * * wget -qO- http://app:8080/api/v1/cron/$STATIC_CRON_TOKEN\" | crontab - && crond -f -L /dev/stdout"
-    environment:
-      - STATIC_CRON_TOKEN
-
 configs:
   borgmatic-config-firefly:
     external: true
 
 volumes:
-  firefly_iii_upload:
-  firefly_iii_db:
+  firefly:
+  database:
   ssh:
     external: true
 
