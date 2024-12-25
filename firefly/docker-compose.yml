@@ -83,9 +83,15 @@ services:
     environment:
       - STATIC_CRON_TOKEN
 
+configs:
+  borgmatic-config-firefly:
+    external: true
+
 volumes:
   firefly_iii_upload:
   firefly_iii_db:
+  ssh:
+    external: true
 
 networks:
   caddy:
