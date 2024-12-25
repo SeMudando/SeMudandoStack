@@ -34,6 +34,11 @@ services:
     volumes:
       - mongodb:/data/db
     command: mongod --oplogSize 128 --replSet rs0
+    environment:
+      MONGODB_REPLICA_SET_MODE: primary
+      MONGODB_REPLICA_SET_NAME: rs0
+      MONGODB_INITIAL_PRIMARY_HOST: mongo
+      MONGODB_ADVERTISED_HOSTNAME: mongo
 
   borgmatic:
     image: b3vis/borgmatic
