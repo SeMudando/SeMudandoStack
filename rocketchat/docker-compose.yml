@@ -29,11 +29,10 @@ services:
       caddy.reverse_proxy: "{{upstreams 3000}}"
 
   mongo:
-    image: mongo:6
+    image: docker.io/bitnami/mongodb:6
     restart: unless-stopped
     volumes:
-      - mongodb:/data/db
-    command: mongod --oplogSize 128 --replSet rs0
+      - mongodb:/bitnami/mongodb
     environment:
       MONGODB_REPLICA_SET_MODE: primary
       MONGODB_REPLICA_SET_NAME: rs0
