@@ -38,7 +38,7 @@ services:
       MONGODB_REPLICA_SET_NAME: rs0
       MONGODB_INITIAL_PRIMARY_HOST: mongo
       MONGODB_ADVERTISED_HOSTNAME: mongo
-      ALLOW_EMPTY_PASSWORD: yes
+      ALLOW_EMPTY_PASSWORD: "yes"
 
   borgmatic:
     image: b3vis/borgmatic
