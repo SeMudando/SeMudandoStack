@@ -36,7 +36,7 @@ services:
       - MAIL_DOMAIN=semudando.com.br
       - REDIS_HOST=redis
       - MYSQL_HOST=mariadb
-      - TRUSTED_PROXIES=95.217.46.244,198.27.69.213
+      - TRUSTED_PROXIES=95.217.46.244
       - NC_default_phone_region=BR
     volumes:
       - nextcloud:/var/www/html
