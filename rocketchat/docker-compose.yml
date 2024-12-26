@@ -2,7 +2,7 @@ version: "3.8"
 
 services:
   rocketchat:
-    image: registry.rocket.chat/rocketchat/rocket.chat:6.13.0
+    image: registry.rocket.chat/rocketchat/rocket.chat:7.1.0
     command: >
       bash -c
         "for i in `seq 1 30`; do
@@ -29,16 +29,11 @@ services:
       caddy.reverse_proxy: "{{upstreams 3000}}"
 
   mongo:
-    image: docker.io/bitnami/mongodb:6.0
+    image: mongo:6
     restart: unless-stopped
     volumes:
-      - mongodb:/bitnami/mongodb
-    environment:
-      MONGODB_REPLICA_SET_MODE: primary
-      MONGODB_REPLICA_SET_NAME: rs0
-      MONGODB_INITIAL_PRIMARY_HOST: mongo
-      MONGODB_ADVERTISED_HOSTNAME: mongo
-      ALLOW_EMPTY_PASSWORD: "yes"
+      - mongodb:/data/db
+    command: mongod --oplogSize 128 --replSet rs0
 
   borgmatic:
     image: b3vis/borgmatic
