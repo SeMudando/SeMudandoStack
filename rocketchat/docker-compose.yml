@@ -29,7 +29,7 @@ services:
       caddy.reverse_proxy: "{{upstreams 3000}}"
 
   mongo:
-    image: docker.io/bitnami/mongodb:6
+    image: docker.io/bitnami/mongodb:6.0
     restart: unless-stopped
     volumes:
       - mongodb:/bitnami/mongodb
