@@ -42,6 +42,7 @@ services:
       - ssh:/root/.ssh/
     environment:
       - BORG_PASSPHRASE
+      - BACKUP_CRON=0 1 * * * # Remove when https://github.com/borgmatic-collective/docker-borgmatic/issues/375 is fixed
     configs:
       - source: borgmatic-config-rocketchat
         target: /etc/borgmatic.d/config.yaml
