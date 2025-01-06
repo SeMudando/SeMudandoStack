@@ -21,8 +21,26 @@ services:
       caddy.reverse_proxy: "{{upstreams 80}}"
       caddy.header.Content-Security-Policy: "upgrade-insecure-requests"
 
+  backup:
+    image: b3vis/borgmatic
+    volumes:
+      - linkstack:/data/linkstack
+      - ssh:/root/.ssh/
+    environment:
+      - BORG_PASSPHRASE
+      - BACKUP_CRON=0 1 * * * # Remove when https://github.com/borgmatic-collective/docker-borgmatic/issues/375 is fixed
+    configs:
+      - source: borgmatic-config-linkstack-semudando
+        target: /etc/borgmatic.d/config.yaml
+
+configs:
+  borgmatic-config-linkstack-semudando:
+    external: true
+
 volumes:
   linkstack:
+  ssh:
+    external: true
 
 networks:
   caddy:
