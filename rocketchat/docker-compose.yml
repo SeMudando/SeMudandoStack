@@ -2,15 +2,7 @@ version: "3.8"
 
 services:
   rocketchat:
-    image: registry.rocket.chat/rocketchat/rocket.chat:6.13.0
-    command: >
-      bash -c
-        "for i in `seq 1 30`; do
-          node main.js &&
-          s=$$? && break || s=$$?;
-          echo \"Tried $$i times. Waiting 5 secs...\";
-          sleep 5;
-        done; (exit $$s)"
+    image: registry.rocket.chat/rocketchat/rocket.chat:7.2.0
     restart: unless-stopped
     environment:
       - PORT=3000
