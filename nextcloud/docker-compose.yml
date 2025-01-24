@@ -68,6 +68,9 @@ services:
     labels:
       caddy: collabora.semudando.com.br
       caddy.reverse_proxy: "{{upstreams 9980}}"
+    volumes:
+      - collabora_fonts:/usr/share/fonts/truetype/more/
+      - collabora_fonts:/opt/cool/systemplate/usr/share/fonts/truetype/more/
 
   cron:
     image: nextcloud:apache
@@ -102,5 +105,6 @@ networks:
 volumes:
   database:
   nextcloud:
+  collabora_fonts:
   ssh:
     external: true
