@@ -12,3 +12,7 @@ services:
 
 volumes:
   uptime-kuma-data:
+
+networks:
+  caddy:
+    external: true
