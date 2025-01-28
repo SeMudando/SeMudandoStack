@@ -1,4 +1,15 @@
 services:
+  borgmatic:
+    image: b3vis/borgmatic:1.9
+    volumes:
+      - kuma-data:/data/kuma
+      - ssh:/root/.ssh
+    configs:
+      - source: borgmatic-config-uptime-kuma
+        target: /etc/borgmatic.d/config.yaml
+    environment:
+      - BORG_PASSPHRASE
+      - BACKUP_CRON=0 1 * * * # Remove when https://github.com/borgmatic-collective/docker-borgmatic/issues/375 is fixed
   uptime-kuma:
     image: louislam/uptime-kuma:1-alpine
     volumes:
