@@ -5,7 +5,7 @@ services:
       - kuma-data:/data/kuma
       - ssh:/root/.ssh
     configs:
-      - source: borgmatic-config-uptime-kuma
+      - source: borgmatic-config-uptime-kuma-semudando
         target: /etc/borgmatic.d/config.yaml
     environment:
       - BORG_PASSPHRASE
