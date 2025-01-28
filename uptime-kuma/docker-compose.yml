@@ -2,7 +2,7 @@ services:
   borgmatic:
     image: b3vis/borgmatic:1.9
     volumes:
-      - kuma-data:/data/kuma
+      - uptime-kuma-data:/data/kuma
       - ssh:/root/.ssh
     configs:
       - source: borgmatic-config-uptime-kuma-semudando
