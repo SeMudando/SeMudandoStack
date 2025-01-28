@@ -24,6 +24,8 @@ services:
 
 volumes:
   uptime-kuma-data:
+  ssh:
+    external: true
 
 networks:
   caddy:
