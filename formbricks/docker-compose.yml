@@ -69,7 +69,7 @@ volumes:
     driver: local
 
 configs:
-  borgmatic-config-nextcloud-semudando:
+  borgmatic-config-formbricks-semudando:
     external: true
 
 networks:
