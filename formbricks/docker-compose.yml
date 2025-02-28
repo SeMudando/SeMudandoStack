@@ -39,7 +39,7 @@ services:
       - CRON_SECRET
       - WEBAPP_URL=https://forms.semudando.com.br
       - NEXTAUTH_URL=https://forms.semudando.com.br
-      - DATABASE_URL="postgresql://postgres:postgres@postgres:5432/formbricks?schema=public"
+      - DATABASE_URL=postgresql://postgres:postgres@postgres:5432/formbricks?schema=public
       ############################################# OPTIONAL (EMAIL CONFIGURATION) #############################################
       # Email Configuration
       # MAIL_FROM:
