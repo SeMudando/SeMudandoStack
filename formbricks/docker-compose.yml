@@ -28,6 +28,9 @@ services:
     image: ghcr.io/formbricks/formbricks:latest
     depends_on:
       - postgres
+    networks:
+      - caddy
+      - default
     labels:
       caddy: "forms.semudando.com.br"
       caddy.reverse_proxy: "{{upstreams 3000}}"
