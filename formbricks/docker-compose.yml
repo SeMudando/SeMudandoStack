@@ -64,9 +64,9 @@ services:
 
 volumes:
   postgres:
-    driver: local
   uploads:
-    driver: local
+  ssh:
+    external: true
 
 configs:
   borgmatic-config-formbricks-semudando:
