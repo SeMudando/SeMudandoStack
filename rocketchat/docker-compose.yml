@@ -2,7 +2,7 @@ version: "3.8"
 
 services:
   rocketchat:
-    image: registry.rocket.chat/rocketchat/rocket.chat:7.4.1
+    image: registry.rocket.chat/rocketchat/rocket.chat:7.5.0
     restart: unless-stopped
     environment:
       - PORT=3000
