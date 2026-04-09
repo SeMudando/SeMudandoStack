@@ -21,7 +21,7 @@ services:
       caddy.reverse_proxy: "{{upstreams 3000}}"
 
   mongo:
-    image: mongo:8
+    image: mongo:7
     restart: unless-stopped
     volumes:
       - mongodb:/data/db
