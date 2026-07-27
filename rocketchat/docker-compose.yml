@@ -36,11 +36,11 @@ services:
       - BORG_PASSPHRASE
       - BACKUP_CRON=0 1 * * * # Remove when https://github.com/borgmatic-collective/docker-borgmatic/issues/375 is fixed
     configs:
-      - source: borgmatic-config-rocketchat
+      - source: borgmatic-config-rocketchat-v2
         target: /etc/borgmatic.d/config.yaml
 
 configs:
-  borgmatic-config-rocketchat:
+  borgmatic-config-rocketchat-v2:
     external: true
 
 volumes:
